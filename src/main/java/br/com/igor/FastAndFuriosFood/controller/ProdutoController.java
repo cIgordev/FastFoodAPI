@@ -2,6 +2,7 @@ package br.com.igor.FastAndFuriosFood.controller;
 
 
 
+import br.com.igor.FastAndFuriosFood.dto.ProdutoDTO;
 import br.com.igor.FastAndFuriosFood.model.Produto;
 import br.com.igor.FastAndFuriosFood.repository.ProdutoRepository;
 import java.util.List;
@@ -29,33 +30,32 @@ public class ProdutoController {
     }
 
   
+
     @PostMapping
-    public Produto adicionar(@RequestBody Produto produto) {
- 
-        return repository.save(produto); 
-    }
-    @GetMapping("/{id}")
-    public Produto buscarPorId(@PathVariable Long id) {
-        return repository.findById(id).orElse(null);
+    public Produto salvar(@RequestBody ProdutoDTO dto) {
+      
+        Produto produto = new Produto();
+        
+  
+        produto.setNome(dto.getNome());
+        produto.setPreco(dto.getPreco());
+        produto.setCategoria(dto.getCategoria());
+        produto.setDescricao(dto.getDescricao());
+        
+
+        return repository.save(produto);
     }
 
-    @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
-        repository.deleteById(id);
-    }
+ 
     @PutMapping("/{id}")
-    public Produto atualizar(@PathVariable Long id, @RequestBody Produto produtoAtualizado) {
+    public Produto atualizar(@PathVariable Long id, @RequestBody ProdutoDTO dto) {
         return repository.findById(id).map(produto -> {
-            produto.setNome(produtoAtualizado.getNome());
-            produto.setPreco(produtoAtualizado.getPreco());
-            produto.setCategoria(produtoAtualizado.getCategoria());
-            produto.setDescricao(produtoAtualizado.getDescricao());
+          
+            produto.setNome(dto.getNome());
+            produto.setPreco(dto.getPreco());
+            produto.setCategoria(dto.getCategoria());
+            produto.setDescricao(dto.getDescricao());
+            
             return repository.save(produto);
         }).orElse(null);
-    }
-
-    @GetMapping("/cat/{categoria}")
-    public List<Produto> buscarPorCategoria(@PathVariable String categoria) {
-        return repository.findByCategoria(categoria);
-    }
-}
+    }}

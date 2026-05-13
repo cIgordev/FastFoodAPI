@@ -24,7 +24,6 @@ public class PedidoController {
         return repository.findById(id).orElse(null);
     }
 
-
     @PostMapping
     public Pedido salvar(@RequestBody Pedido pedido) {
         pedido.setStatus("ABERTO"); 
